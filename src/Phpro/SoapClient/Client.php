@@ -9,6 +9,7 @@ use Phpro\SoapClient\Type\MultiArgumentRequestInterface;
 use Phpro\SoapClient\Type\RequestInterface;
 use Phpro\SoapClient\Type\ResultInterface;
 use Phpro\SoapClient\Type\ResultProviderInterface;
+use Phpro\SoapClient\Util\XmlFormatter;
 use SoapClient;
 
 use SoapHeader;
@@ -59,14 +60,14 @@ class Client implements ClientInterface
     public function debugLastSoapRequest(): array
     {
         return [
-            'request'  => [
-                'headers' => $this->soapClient->__getLastRequestHeaders(),
-                'body'    => $this->soapClient->__getLastRequest(),
+            'request' => [
+                'headers' => trim($this->soapClient->__getLastRequestHeaders()),
+                'body'    => XmlFormatter::format($this->soapClient->__getLastRequest()),
             ],
             'response' => [
-                'headers' => $this->soapClient->__getLastResponseHeaders(),
-                'body'    => $this->soapClient->__getLastResponse(),
-            ],
+                'headers' => trim($this->soapClient->__getLastResponseHeaders()),
+                'body'    => XmlFormatter::format($this->soapClient->__getLastResponse()),
+            ]
         ];
     }
 
